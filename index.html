@@ -2,163 +2,151 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TulenmasCandy Hunt</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 <style>
-* {
+  body {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-}
-
-body {
-    font-family: system-ui, -apple-system, Arial, sans-serif;
-    background: #000;
+    background: #0b0b0b;
+    font-family: Arial, sans-serif;
     color: white;
-}
+    user-select: none;
+  }
 
-/* ===== HEADER ===== */
-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 14px;
-    text-align: center;
-    background: rgba(0,0,0,0.7);
-    z-index: 10;
-    font-size: 18px;
-}
-
-/* ===== SCENE ===== */
-.scene {
+  .screen {
+    display: none;
     position: relative;
-    width: 100vw;
     height: 100vh;
-    overflow: hidden;
-}
+    width: 100vw;
+  }
 
-.scene img.bg {
+  .screen.active {
+    display: block;
+  }
+
+  img.bg {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    pointer-events: none;
-}
+  }
 
-/* ===== CANDY ===== */
-.candy {
+  .candy {
     position: absolute;
+    width: 18px;
     cursor: pointer;
     transition: transform 0.2s;
-}
+  }
 
-.candy:active {
+  .candy:hover {
     transform: scale(1.2);
-}
+  }
 
-/* ===== OVERLAY ===== */
-.overlay {
+  .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.88);
+    background: rgba(0,0,0,0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    z-index: 100;
-    padding: 30px;
-}
+    padding: 20px;
+    z-index: 10;
+  }
 
-.overlay p {
-    font-size: 22px;
-    line-height: 1.6;
-}
+  .box {
+    max-width: 500px;
+    font-size: 18px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+  }
 </style>
 </head>
 
 <body>
 
-<header>
-    Найдено: <span id="found">0</span> / 5
-</header>
+<!-- ОБУЧЕНИЕ -->
+<div class="overlay" id="tutorial">
+  <div class="box">
+    <h2>Добро пожаловать во Второе Испытание 🦭🍬</h2>
+    <p>
+      На каждой картинке спрятана TulenmasCandy.<br>
+      Приближать изображение не получится.<br><br>
+      Найди и нажми на конфету, чтобы перейти дальше.
+    </p>
+    <button onclick="start()">Начать</button>
+  </div>
+</div>
 
-<div id="game"></div>
+<!-- ФИНАЛ -->
+<div class="overlay" id="finish" style="display:none">
+  <div class="box">
+    <h2>🎉 Поздравляем!</h2>
+    <p>
+      Молодец, ты прошел испытание 2.<br><br>
+      Пришли данный скрин в группу<br>
+      <b>«TulenmasCandy Hunt»</b>,<br>
+      чтобы получить 10 TulenmasCandy 🍬
+    </p>
+  </div>
+</div>
+
+<!-- ЭКРАНЫ -->
+<div class="screen active" id="s1">
+  <img class="bg" src="IMG_9973.jpeg">
+  <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
+       style="top:70%; left:20%" onclick="next()">
+</div>
+
+<div class="screen" id="s2">
+  <img class="bg" src="IMG_9971.jpeg">
+  <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
+       style="top:45%; left:60%" onclick="next()">
+</div>
+
+<div class="screen" id="s3">
+  <img class="bg" src="IMG_9972.jpeg">
+  <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
+       style="top:62%; left:48%; width:14px" onclick="next()">
+</div>
+
+<div class="screen" id="s4">
+  <img class="bg" src="IMG_9974.jpeg">
+  <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
+       style="top:30%; left:75%; width:11px" onclick="next()">
+</div>
+
+<div class="screen" id="s5">
+  <img class="bg" src="IMG_9975.jpeg">
+  <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
+       style="top:80%; left:55%; width:9px" onclick="finish()">
+</div>
 
 <script>
-/* ===== ДАННЫЕ ===== */
-const scenes = [
-    { img: "img1.jpg", size: 48, x: 60, y: 70 },
-    { img: "img2.jpg", size: 36, x: 30, y: 55 },
-    { img: "img3.jpg", size: 28, x: 72, y: 40 },
-    { img: "img4.jpg", size: 20, x: 45, y: 65 },
-    { img: "img5.jpg", size: 14, x: 80, y: 75 }
-];
+let current = 1;
 
-let current = 0;
-let found = 0;
-
-const game = document.getElementById("game");
-const foundEl = document.getElementById("found");
-
-/* ===== ЗАПРЕТ ЗУМА ===== */
-document.addEventListener("wheel", e => e.preventDefault(), { passive:false });
-document.addEventListener("gesturestart", e => e.preventDefault());
-document.addEventListener("dblclick", e => e.preventDefault());
-
-/* ===== ЗАГРУЗКА СЦЕНЫ ===== */
-function loadScene() {
-    game.innerHTML = "";
-
-    const s = scenes[current];
-
-    const scene = document.createElement("div");
-    scene.className = "scene";
-
-    const bg = document.createElement("img");
-    bg.src = s.img;
-    bg.className = "bg";
-
-    const candy = document.createElement("img");
-    candy.src = "candy.png";
-    candy.className = "candy";
-    candy.style.width = s.size + "px";
-    candy.style.left = s.x + "%";
-    candy.style.top = s.y + "%";
-
-    candy.onclick = () => {
-        found++;
-        foundEl.textContent = found;
-        current++;
-
-        if (current < scenes.length) {
-            loadScene();
-        } else {
-            finish();
-        }
-    };
-
-    scene.append(bg, candy);
-    game.append(scene);
+function start() {
+  document.getElementById("tutorial").style.display = "none";
 }
 
-/* ===== ФИНАЛ ===== */
+function next() {
+  document.getElementById("s" + current).classList.remove("active");
+  current++;
+  document.getElementById("s" + current).classList.add("active");
+}
+
 function finish() {
-    document.body.insertAdjacentHTML("beforeend", `
-        <div class="overlay">
-            <p>
-                Молодец, ты прошел испытание 1.<br>
-                Пришли данный скрин в группу «TulenmasCandy Hunt»,<br>
-                чтобы получить 10 TulenmasCandy
-            </p>
-        </div>
-    `);
+  document.getElementById("s5").classList.remove("active");
+  document.getElementById("finish").style.display = "flex";
 }
-
-/* ===== СТАРТ ===== */
-loadScene();
 </script>
 
 </body>
