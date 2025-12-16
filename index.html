@@ -1,293 +1,165 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кладбищенский забег</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #ff6b35;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 15px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin: 20px 0;
-            text-shadow: 0 0 5px #ff6b35;
-            letter-spacing: 1px;
-            font-weight: 900;
-        }
-        
-        .wheel-container {
-            width: 280px;
-            height: 280px;
-            margin: 0 auto 30px;
-            position: relative;
-            perspective: 800px;
-        }
-        
-        .wheel {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 3s cubic-bezier(0.17, 0.67, 0.16, 0.99);
-        }
-        
-        .card {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #2d2d44, #252538);
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 
-                        inset 0 0 10px rgba(255, 107, 53, 0.3);
-            border: 2px solid #ff6b35;
-            backface-visibility: hidden;
-            transform-origin: center;
-        }
-        
-        .card-icon {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 5px #ff6b35);
-        }
-        
-        .card-title {
-            font-size: 1.2rem;
-            text-align: center;
-            color: #f4d03f;
-            text-shadow: 0 0 5px #f4d03f;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        
-        .button {
-            background: linear-gradient(145deg, #ff6b35, #e55627);
-            color: #1a1a2e;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.3rem;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 3px 10px rgba(255, 107, 53, 0.4);
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 900;
-        }
-        
-        .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.6);
-        }
-        
-        .button:active {
-            transform: translateY(0);
-        }
-        
-        .button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .result {
-            font-size: 1.5rem;
-            margin-top: 20px;
-            color: #f4d03f;
-            text-shadow: 0 0 5px #f4d03f;
-            font-weight: 900;
-            min-height: 40px;
-            padding: 0 10px;
-        }
-        
-        .spider {
-            position: absolute;
-            font-size: 1.5rem;
-            animation: swing 3s infinite ease-in-out;
-            z-index: -1;
-        }
-        
-        @keyframes swing {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(10deg); }
-        }
-        
-        .bat {
-            position: absolute;
-            font-size: 1.5rem;
-            animation: fly 8s infinite linear;
-            z-index: -1;
-        }
-        
-        @keyframes fly {
-            0% { transform: translateX(-100px) translateY(0); }
-            50% { transform: translateX(calc(100vw + 100px)) translateY(50px); }
-            100% { transform: translateX(-100px) translateY(0); }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .wheel-container {
-                width: 220px;
-                height: 220px;
-            }
-            
-            .card-icon {
-                font-size: 2.5rem;
-            }
-            
-            .card-title {
-                font-size: 1rem;
-            }
-            
-            .button {
-                padding: 10px 25px;
-                font-size: 1.1rem;
-            }
-            
-            .result {
-                font-size: 1.3rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>TulenmasCandy Hunt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+body {
+    font-family: system-ui, -apple-system, Arial, sans-serif;
+    background: #000;
+    color: white;
+}
+
+/* ===== HEADER ===== */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    background: rgba(0,0,0,0.7);
+    z-index: 10;
+    font-size: 18px;
+}
+
+/* ===== SCENE ===== */
+.scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.scene img.bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+/* ===== CANDY ===== */
+.candy {
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.candy:active {
+    transform: scale(1.2);
+}
+
+/* ===== OVERLAY ===== */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 100;
+    padding: 30px;
+}
+
+.overlay p {
+    font-size: 22px;
+    line-height: 1.6;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>ТВОЯ РОЛЬ В КЛАДБИЩЕНСКОМ ЗАБЕГЕ:</h1>
-        
-        <div class="wheel-container">
-            <div class="wheel" id="wheel">
-                <!-- Карточки будут добавлены через JavaScript -->
-            </div>
+
+<header>
+    Найдено: <span id="found">0</span> / 5
+</header>
+
+<div id="game"></div>
+
+<script>
+/* ===== ДАННЫЕ ===== */
+const scenes = [
+    { img: "img1.jpg", size: 48, x: 60, y: 70 },
+    { img: "img2.jpg", size: 36, x: 30, y: 55 },
+    { img: "img3.jpg", size: 28, x: 72, y: 40 },
+    { img: "img4.jpg", size: 20, x: 45, y: 65 },
+    { img: "img5.jpg", size: 14, x: 80, y: 75 }
+];
+
+let current = 0;
+let found = 0;
+
+const game = document.getElementById("game");
+const foundEl = document.getElementById("found");
+
+/* ===== ЗАПРЕТ ЗУМА ===== */
+document.addEventListener("wheel", e => e.preventDefault(), { passive:false });
+document.addEventListener("gesturestart", e => e.preventDefault());
+document.addEventListener("dblclick", e => e.preventDefault());
+
+/* ===== ЗАГРУЗКА СЦЕНЫ ===== */
+function loadScene() {
+    game.innerHTML = "";
+
+    const s = scenes[current];
+
+    const scene = document.createElement("div");
+    scene.className = "scene";
+
+    const bg = document.createElement("img");
+    bg.src = s.img;
+    bg.className = "bg";
+
+    const candy = document.createElement("img");
+    candy.src = "candy.png";
+    candy.className = "candy";
+    candy.style.width = s.size + "px";
+    candy.style.left = s.x + "%";
+    candy.style.top = s.y + "%";
+
+    candy.onclick = () => {
+        found++;
+        foundEl.textContent = found;
+        current++;
+
+        if (current < scenes.length) {
+            loadScene();
+        } else {
+            finish();
+        }
+    };
+
+    scene.append(bg, candy);
+    game.append(scene);
+}
+
+/* ===== ФИНАЛ ===== */
+function finish() {
+    document.body.insertAdjacentHTML("beforeend", `
+        <div class="overlay">
+            <p>
+                Молодец, ты прошел испытание 1.<br>
+                Пришли данный скрин в группу «TulenmasCandy Hunt»,<br>
+                чтобы получить 10 TulenmasCandy
+            </p>
         </div>
-        
-        <div class="result" id="result"></div>
-        
-        <button class="button" id="fateButton">РЕШИТЬ СУДЬБУ</button>
-    </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const fateButton = document.getElementById('fateButton');
-            const wheel = document.getElementById('wheel');
-            const resultElement = document.getElementById('result');
-            
-            // Создаем хэллоуинскую атмосферу
-            createHalloweenAtmosphere();
-            
-            // Роли с соответствующими иконками
-            const roles = [
-                { name: 'ТРИОКУЛУС', icon: '👁️👁️👁️' },
-                { name: 'ЛЕТУЧАЯ МЫШЬ', icon: '🦇' },
-                { name: 'КАРНАВАЛЬНЫЙ СКЕЛЕТ', icon: '💀' },
-                { name: 'ВЕДЬМА', icon: '🧙‍♀️' },
-                { name: 'ЗУБЫ МОНСТРА', icon: '🦷👹' },
-                { name: 'СМЕРТЬ В ОЧКАХ', icon: '☠️👓' },
-                { name: 'ЧЕРНАЯ КОШКА', icon: '🐈‍⬛' }
-            ];
-            
-            // Создаем карточки для колеса
-            roles.forEach((role, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.style.transform = `rotateY(${index * (360 / roles.length)}deg) translateZ(350px)`;
-                
-                const icon = document.createElement('div');
-                icon.className = 'card-icon';
-                icon.textContent = role.icon;
-                
-                const title = document.createElement('div');
-                title.className = 'card-title';
-                title.textContent = role.name;
-                
-                card.appendChild(icon);
-                card.appendChild(title);
-                wheel.appendChild(card);
-            });
-            
-            // Переменные для управления анимацией
-            let isSpinning = false;
-            let currentRotation = 0;
-            
-            // Обработчик для кнопки "Решить судьбу"
-            fateButton.addEventListener('click', function() {
-                if (isSpinning) return;
-                
-                isSpinning = true;
-                fateButton.disabled = true;
-                resultElement.textContent = '';
-                
-                // Генерируем случайное вращение (минимум 3 полных оборота + случайный угол)
-                const spins = 3 + Math.floor(Math.random() * 2); // 3-4 полных оборотов
-                const randomIndex = Math.floor(Math.random() * roles.length);
-                const targetAngle = 360 * spins + (randomIndex * (360 / roles.length));
-                
-                // Применяем вращение
-                currentRotation += targetAngle;
-                wheel.style.transform = `rotateY(${currentRotation}deg)`;
-                
-                // Показываем результат после завершения анимации
-                setTimeout(() => {
-                    resultElement.textContent = roles[randomIndex].name;
-                    isSpinning = false;
-                    fateButton.disabled = false;
-                }, 3000);
-            });
-            
-            // Функция для создания хэллоуинской атмосферы
-            function createHalloweenAtmosphere() {
-                // Добавляем пауков
-                for (let i = 0; i < 3; i++) {
-                    const spider = document.createElement('div');
-                    spider.className = 'spider';
-                    spider.innerHTML = '🕷️';
-                    spider.style.left = Math.random() * 100 + 'vw';
-                    spider.style.top = Math.random() * 100 + 'vh';
-                    spider.style.animationDelay = Math.random() * 5 + 's';
-                    document.body.appendChild(spider);
-                }
-                
-                // Добавляем летучих мышей
-                for (let i = 0; i < 2; i++) {
-                    const bat = document.createElement('div');
-                    bat.className = 'bat';
-                    bat.innerHTML = '🦇';
-                    bat.style.top = Math.random() * 50 + 'vh';
-                    bat.style.animationDelay = Math.random() * 5 + 's';
-                    document.body.appendChild(bat);
-                }
-            }
-        });
-    </script>
+    `);
+}
+
+/* ===== СТАРТ ===== */
+loadScene();
+</script>
+
 </body>
 </html>
