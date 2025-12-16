@@ -33,19 +33,18 @@
 
   .candy {
     position: absolute;
-    width: 18px;
     cursor: pointer;
     transition: transform 0.2s;
   }
 
   .candy:hover {
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
 
   .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.9);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -73,14 +72,22 @@
 
 <body>
 
-<!-- ОБУЧЕНИЕ -->
-<div class="overlay" id="tutorial">
+<!-- ЗАГРУЗКА -->
+<div class="overlay" id="loading">
   <div class="box">
-    <h2>Добро пожаловать во Второе Испытание 🦭🍬</h2>
+    <h2>Загрузка…</h2>
+    <p id="progress">0%</p>
+  </div>
+</div>
+
+<!-- ОБУЧЕНИЕ -->
+<div class="overlay" id="tutorial" style="display:none">
+  <div class="box">
+    <h2>🦭 TulenmasCandy Hunt 🍬</h2>
     <p>
       На каждой картинке спрятана TulenmasCandy.<br>
-      Приближать изображение не получится.<br><br>
-      Найди и нажми на конфету, чтобы перейти дальше.
+      Увеличивать изображение нельзя.<br><br>
+      Найди конфету и нажми на неё.
     </p>
     <button onclick="start()">Начать</button>
   </div>
@@ -89,10 +96,10 @@
 <!-- ФИНАЛ -->
 <div class="overlay" id="finish" style="display:none">
   <div class="box">
-    <h2>🎉 Поздравляем!</h2>
+    <h2>🎉 Молодец!</h2>
     <p>
-      Молодец, ты прошел испытание 2.<br><br>
-      Пришли данный скрин в группу<br>
+      Ты прошел испытание 1.<br><br>
+      Пришли этот скрин в группу<br>
       <b>«TulenmasCandy Hunt»</b>,<br>
       чтобы получить 10 TulenmasCandy 🍬
     </p>
@@ -103,34 +110,60 @@
 <div class="screen active" id="s1">
   <img class="bg" src="IMG_9973.jpeg">
   <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
-       style="top:70%; left:20%" onclick="next()">
+       style="top:78%; left:12%; width:14px" onclick="next()">
 </div>
 
 <div class="screen" id="s2">
   <img class="bg" src="IMG_9971.jpeg">
   <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
-       style="top:45%; left:60%" onclick="next()">
+       style="top:22%; left:82%; width:13px" onclick="next()">
 </div>
 
 <div class="screen" id="s3">
   <img class="bg" src="IMG_9972.jpeg">
   <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
-       style="top:62%; left:48%; width:14px" onclick="next()">
+       style="top:65%; left:35%; width:12px" onclick="next()">
 </div>
 
 <div class="screen" id="s4">
   <img class="bg" src="IMG_9974.jpeg">
   <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
-       style="top:30%; left:75%; width:11px" onclick="next()">
+       style="top:18%; left:55%; width:11px" onclick="next()">
 </div>
 
 <div class="screen" id="s5">
   <img class="bg" src="IMG_9975.jpeg">
   <img class="candy" src="0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
-       style="top:80%; left:55%; width:9px" onclick="finish()">
+       style="top:82%; left:68%; width:9px" onclick="finish()">
 </div>
 
 <script>
+const images = [
+  "IMG_9973.jpeg",
+  "IMG_9971.jpeg",
+  "IMG_9972.jpeg",
+  "IMG_9974.jpeg",
+  "IMG_9975.jpeg",
+  "0D1FE365-BEBC-45DE-B474-68D1B195F3AC.png"
+];
+
+let loaded = 0;
+
+images.forEach(src => {
+  const img = new Image();
+  img.src = src;
+  img.onload = () => {
+    loaded++;
+    document.getElementById("progress").innerText =
+      Math.round((loaded / images.length) * 100) + "%";
+
+    if (loaded === images.length) {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("tutorial").style.display = "flex";
+    }
+  };
+});
+
 let current = 1;
 
 function start() {
